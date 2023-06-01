@@ -17,15 +17,16 @@ VALUES ('Software Engineer', 80000.00, 1),
        ('Operations Manager', 95000.00, 5);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('John', 'Doe', 1, NULL), -- Software Engineer, no manager
-       ('Jane', 'Smith', 2, 5), -- Product Manager, managed by HR Manager
-       ('Michael', 'Johnson', 3, 5), -- UX Designer, managed by HR Manager
-       ('Emily', 'Williams', 4, 2), -- Marketing Specialist, managed by Product Manager
-       ('David', 'Brown', 5, NULL), -- HR Manager, no manager
-       ('Sarah', 'Jones', 6, 1), -- Data Analyst, managed by Software Engineer
-       ('Christopher', 'Taylor', 7, 4), -- Quality Assurance Engineer, managed by Marketing Specialist
-       ('Olivia', 'Anderson', 8, 4), -- Sales Representative, managed by Marketing Specialist
-       ('Daniel', 'Thomas', 9, 5), -- Operations Manager, managed by HR Manager
-       ('Sophia', 'Clark', 2, 5), -- Product Manager, managed by HR Manager
-       ('Matthew', 'Harris', 5, NULL), -- HR Manager, no manager
-       ('Ava', 'Martin', 7, 4); -- Quality Assurance Engineer, managed by Marketing Specialist
+VALUES 
+  ('John', 'Doe', 1, NULL), -- Software Engineer, no manager
+  ('David', 'Brown', 5, NULL), -- HR Manager, no manager
+  ('Jane', 'Smith', 2, 2), -- Product Manager, managed by David Brown
+  ('Michael', 'Johnson', 3, 2), -- UX Designer, managed by David Brown
+  ('Emily', 'Williams', 4, 3), -- Marketing Specialist, managed by Jane Smith
+  ('Sarah', 'Jones', 6, 1), -- Data Analyst, managed by John Doe
+  ('Christopher', 'Taylor', 7, 4), -- Quality Assurance Engineer, managed by Emily Williams
+  ('Olivia', 'Anderson', 8, 4), -- Sales Representative, managed by Emily Williams
+  ('Daniel', 'Thomas', 9, 5), -- Operations Manager, managed by David Brown
+  ('Sophia', 'Clark', 2, 5), -- Product Manager, managed by David Brown
+  ('Matthew', 'Harris', 5, 5), -- HR Manager, managed by himself (David Brown)
+  ('Ava', 'Martin', 7, 7); -- Quality Assurance Engineer, managed by herself (Emily Williams)
