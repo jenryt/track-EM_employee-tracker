@@ -18,9 +18,9 @@ async function viewAllDepartments() {
 async function viewAllRoles() {
   try {
     const results = await connection.promise().query(`
-      SELECT r.id, r.title, r.salary, d.name AS department_name
-      FROM role r
-      LEFT JOIN department d ON r.department_id = d.id
+    SELECT r.id, r.title, r.salary, d.name AS department_name
+    FROM role r
+    LEFT JOIN department d ON r.department_id = d.id
     `);
     console.log();
     return results[0];
@@ -32,7 +32,16 @@ async function viewAllRoles() {
 
 async function viewAllEmployees() {
   try {
-    const results = await connection.promise().query("SELECT * FROM employee");
+    const results = await connection.promise().query(`
+    SELECT e.id, 
+           e.first_name, 
+           e.last_name, 
+           r.title AS role_title, 
+           CONCAT(m.first_name, ' ', m.last_name) AS manager_name
+    FROM employee e
+    LEFT JOIN role r ON e.role_id = r.id
+    LEFT JOIN employee m ON e.manager_id = m.id
+    `);
     console.log();
     return results[0];
   } catch (error) {
