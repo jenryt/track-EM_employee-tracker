@@ -5,10 +5,14 @@ const {
   viewAllDepartments,
   viewAllRoles,
   viewAllEmployees,
-  AddDepartment,
-  AddRole,
-  AddEmployee,
-  UpdateEmployeeRole,
+  addDepartment,
+  addRole,
+  addEmployee,
+  updateEmployeeRole,
+  deleteDepartment,
+  deleteRole,
+
+  deleteEmployee,
 } = require("./utils/queries");
 
 // Create a function to initialize app
@@ -27,6 +31,10 @@ function init() {
           "Add Role",
           "Add An Employee",
           "Update Employee Role",
+          "Update Employee Manager", //
+          "Delete Department", //
+          "Delete Role", //
+          "Delete Employee", //
           "Quit",
         ],
       },
@@ -52,22 +60,42 @@ function init() {
         }
 
         case "Add Department": {
-          await AddDepartment();
+          await addDepartment();
           return init();
         }
 
         case "Add Role": {
-          await AddRole();
+          await addRole();
           return init();
         }
 
         case "Add An Employee": {
-          await AddEmployee();
+          await addEmployee();
           return init();
         }
 
         case "Update Employee Role": {
-          await UpdateEmployeeRole();
+          await updateEmployeeRole();
+          return init();
+        }
+
+        case "Update Employee Manager": {
+          await updateEmployeeManager();
+          return init();
+        }
+
+        case "Delete Department": {
+          await deleteDepartment();
+          return init();
+        }
+
+        case "Delete Role": {
+          await deleteRole();
+          return init();
+        }
+
+        case "Delete Employee": {
+          await deleteEmployee();
           return init();
         }
 
