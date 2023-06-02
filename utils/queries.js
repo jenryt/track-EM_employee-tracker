@@ -17,7 +17,11 @@ async function viewAllDepartments() {
 
 async function viewAllRoles() {
   try {
-    const results = await connection.promise().query("SELECT * FROM role");
+    const results = await connection.promise().query(`
+      SELECT r.id, r.title, r.salary, d.name AS department_name
+      FROM role r
+      LEFT JOIN department d ON r.department_id = d.id
+    `);
     console.log();
     return results[0];
   } catch (error) {
