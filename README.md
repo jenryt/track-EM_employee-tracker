@@ -40,6 +40,8 @@ https://opensource.org/license/mit/
 ## Credits
 
 OpenAI<br>
+mysql2 at https://www.npmjs.com/package/mysql2<br>
+inquirer at https://www.npmjs.com/package/inquirer#separator<br>
 License Badge created by shields.io<br>
 License links provide by opensource.org<br>
 
