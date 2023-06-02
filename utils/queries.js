@@ -313,7 +313,7 @@ async function deleteDepartment() {
       .prompt([
         {
           type: "number",
-          message: "Please provide the employee id to delete.",
+          message: "Please provide the department id to delete.",
           name: "department_id",
         },
         {

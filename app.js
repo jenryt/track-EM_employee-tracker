@@ -132,17 +132,3 @@ function init() {
 
 // Function call to initialize app
 init();
-
-// for testing
-// Department to add:
-// Finance
-// Sales
-// Operations
-
-// Role to add:
-// { title: 'Software Developer', salary: 85000.00, department_id: 1 },
-// { title: 'Business Analyst', salary: 80000.00, department_id: 3 },
-
-// Employee to add:
-// ('Emma', 'Davis', 3, 1), -- UX Designer, managed by John Doe
-// ('James', 'Wilson', 4, 2), -- Marketing Specialist, managed by David Brown
