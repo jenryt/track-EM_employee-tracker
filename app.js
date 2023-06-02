@@ -5,6 +5,9 @@ const {
   viewAllDepartments,
   viewAllRoles,
   viewAllEmployees,
+  viewEmployeesByManager,
+  viewEmployeesByDepartment,
+  departmentBudget,
   addDepartment,
   addRole,
   addEmployee,
@@ -27,6 +30,9 @@ function init() {
           "View All Departments",
           "View All Roles",
           "View All Employees",
+          "View employees by manager",
+          "View employees by department",
+          "View Department Budget",
           "Add Department",
           "Add Role",
           "Add An Employee",
@@ -56,6 +62,23 @@ function init() {
         case "View All Employees": {
           let allEmployees = await viewAllEmployees();
           console.table(allEmployees);
+          return init();
+        }
+
+        case "View employees by manager": {
+          let allEmployees = await viewEmployeesByManager();
+          console.table(allEmployees);
+          return init();
+        }
+
+        case "View employees by department": {
+          let allEmployees = await viewEmployeesByDepartment();
+          console.table(allEmployees);
+          return init();
+        }
+
+        case "View Department Budget": {
+          await departmentBudget();
           return init();
         }
 
@@ -100,6 +123,7 @@ function init() {
         }
 
         case "Quit": {
+          console.log("ciao!");
           process.exit();
         }
       }
