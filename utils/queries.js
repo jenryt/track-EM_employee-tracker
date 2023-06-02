@@ -50,6 +50,96 @@ async function viewAllEmployees() {
   }
 }
 
+async function viewEmployeesByManager() {
+  try {
+    const response = await inquirer.prompt([
+      {
+        type: "number",
+        message: "Please enter the manager id to view employee by manager.",
+        name: "manager_id",
+      },
+    ]);
+    const results = await connection.promise().query(`
+      SELECT e.id, 
+             e.first_name, 
+             e.last_name, 
+             r.title AS role_title, 
+             CONCAT(m.first_name, ' ', m.last_name) AS manager_name
+      FROM employee e
+      LEFT JOIN role r ON e.role_id = r.id
+      LEFT JOIN employee m ON e.manager_id = m.id
+      WHERE m.id = ${response.manager_id}
+    `);
+    console.log(`\nEmployees under manager ${results[0][0].manager_name}...\n`);
+    return results[0];
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+
+async function viewEmployeesByDepartment() {
+  try {
+    const response = await inquirer.prompt([
+      {
+        type: "number",
+        message:
+          "Please enter the department id to view employee by department.",
+        name: "department_id",
+      },
+    ]);
+    const [department] = await connection
+      .promise()
+      .query(
+        `SELECT name FROM department WHERE id = ${response.department_id}`
+      );
+
+    const results = await connection.promise().query(`
+      SELECT e.id, 
+             e.first_name, 
+             e.last_name, 
+             r.title AS role_title, 
+             CONCAT(m.first_name, ' ', m.last_name) AS manager_name
+      FROM employee e
+      LEFT JOIN role r ON e.role_id = r.id
+      LEFT JOIN employee m ON e.manager_id = m.id
+      WHERE r.department_id = ${response.department_id}
+    `);
+    console.log(`\n${department[0].name} Department...\n`);
+    return results[0];
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+
+async function departmentBudget() {
+  try {
+    const response = await inquirer.prompt([
+      {
+        type: "number",
+        message:
+          "Please enter the department id to view the department budget.",
+        name: "department_id",
+      },
+    ]);
+    const results = await connection.promise().query(`
+      SELECT d.name AS department_name, SUM(r.salary) AS department_budget
+      FROM employee e
+      JOIN role r ON e.role_id = r.id
+      JOIN department d ON r.department_id = d.id
+      WHERE r.department_id = ${response.department_id}
+    `);
+    console.log(
+      `The budget for ${results[0][0].department_name} department is: $${results[0][0].department_budget}`
+    );
+    return results[0];
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+
 async function addDepartment() {
   try {
     await inquirer
@@ -341,15 +431,13 @@ async function deleteEmployee() {
   }
 }
 
-// async function AddDepartment() {}
-// async function AddDepartment() {}
-// async function AddDepartment() {}
-// async function AddDepartment() {}
-// async function AddDepartment() {}
 module.exports = {
   viewAllDepartments,
   viewAllRoles,
   viewAllEmployees,
+  viewEmployeesByManager,
+  viewEmployeesByDepartment,
+  departmentBudget,
   addDepartment,
   addRole,
   addEmployee,
