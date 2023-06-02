@@ -14,6 +14,7 @@ async function viewAllDepartments() {
     return;
   }
 }
+
 async function viewAllRoles() {
   try {
     const results = await connection.promise().query("SELECT * FROM role");
@@ -36,7 +37,7 @@ async function viewAllEmployees() {
   }
 }
 
-async function AddDepartment() {
+async function addDepartment() {
   try {
     await inquirer
       .prompt([
@@ -60,7 +61,7 @@ async function AddDepartment() {
   }
 }
 
-async function AddRole() {
+async function addRole() {
   try {
     await inquirer
       .prompt([
@@ -102,7 +103,7 @@ async function AddRole() {
   }
 }
 
-async function AddEmployee() {
+async function addEmployee() {
   try {
     await inquirer
       .prompt([
@@ -140,7 +141,8 @@ async function AddEmployee() {
     return;
   }
 }
-async function UpdateEmployeeRole() {
+
+async function updateEmployeeRole() {
   try {
     await inquirer
       .prompt([
@@ -163,17 +165,169 @@ async function UpdateEmployeeRole() {
           WHERE id = '${response.employee_id}';
           `
         );
-        console.log("Employee role has been successfully updated!");
+        console.log("Employee's role has been successfully updated!");
       });
   } catch (error) {
     console.log(error);
     return;
   }
 }
-// async function AddDepartment() {}
-// async function AddDepartment() {}
-// async function AddDepartment() {}
-// async function AddDepartment() {}
+
+async function updateEmployeeManager() {
+  try {
+    await inquirer
+      .prompt([
+        {
+          type: "number",
+          message: "Please provide employee id to update.",
+          name: "employee_id",
+        },
+        {
+          type: "number",
+          message: "Please enter the new manager id for this employee.",
+          name: "new_manager_id",
+        },
+      ])
+      .then(async (response) => {
+        connection.promise().query(
+          `
+          UPDATE employee
+          SET manager_id = '${response.new_manager_id}'
+          WHERE id = '${response.employee_id}';
+          `
+        );
+        console.log("Employee's manager has been successfully updated!");
+      });
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+
+async function deleteDepartment() {
+  try {
+    await inquirer
+      .prompt([
+        {
+          type: "number",
+          message: "Please provide the employee id to delete.",
+          name: "department_id",
+        },
+        {
+          type: "confirm",
+          message: async (response) => {
+            const [department] = await connection
+              .promise()
+              .query(
+                `SELECT name FROM department WHERE id = '${response.department_id}'`
+              );
+
+            return `Are you sure you want to delete the department '${department[0].name}'?`;
+          },
+          name: "confirm",
+          default: false,
+        },
+      ])
+      .then(async (response) => {
+        if (response.confirm) {
+          connection.promise().query(`
+          DELETE FROM department
+          WHERE id = '${response.department_id}'
+          `);
+          console.log("The department has been sucessfully deleted!");
+          await viewAllDepartments();
+        } else {
+          console.log("Deletion canceled.");
+        }
+      });
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+
+async function deleteRole() {
+  try {
+    await inquirer
+      .prompt([
+        {
+          type: "number",
+          message: "Please provide the role id to delete.",
+          name: "role_id",
+        },
+        {
+          type: "confirm",
+          message: async (response) => {
+            const [role] = await connection
+              .promise()
+              .query(`SELECT title FROM role WHERE id = '${response.role_id}'`);
+
+            return `Are you sure you want to delete the role '${role[0].title}'?`;
+          },
+          name: "confirm",
+          default: false,
+        },
+      ])
+      .then(async (response) => {
+        if (response.confirm) {
+          connection.promise().query(`
+          DELETE FROM role
+          WHERE id = '${response.role_id}'
+          `);
+          console.log("The role has been sucessfully deleted!");
+          await viewAllRoles();
+        } else {
+          console.log("Deletion canceled.");
+        }
+      });
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+
+async function deleteEmployee() {
+  try {
+    await inquirer
+      .prompt([
+        {
+          type: "number",
+          message: "Please provide the employee id to delete.",
+          name: "employee_id",
+        },
+        {
+          type: "confirm",
+          message: async (response) => {
+            const [employee] = await connection
+              .promise()
+              .query(
+                `SELECT first_name, last_name FROM employee WHERE id = '${response.employee_id}'`
+              );
+
+            return `Are you sure you want to delete the employee '${employee[0].first_name} ${employee[0].last_name}'?`;
+          },
+          name: "confirm",
+          default: false,
+        },
+      ])
+      .then(async (response) => {
+        if (response.confirm) {
+          connection.promise().query(`
+          DELETE FROM employee
+          WHERE id = '${response.employee_id}'
+          `);
+          console.log("The employee has been sucessfully deleted!");
+          await viewAllEmployees();
+        } else {
+          console.log("Deletion canceled.");
+        }
+      });
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+
 // async function AddDepartment() {}
 // async function AddDepartment() {}
 // async function AddDepartment() {}
@@ -183,8 +337,12 @@ module.exports = {
   viewAllDepartments,
   viewAllRoles,
   viewAllEmployees,
-  AddDepartment,
-  AddRole,
-  AddEmployee,
-  UpdateEmployeeRole,
+  addDepartment,
+  addRole,
+  addEmployee,
+  updateEmployeeRole,
+  updateEmployeeManager,
+  deleteDepartment,
+  deleteRole,
+  deleteEmployee,
 };
